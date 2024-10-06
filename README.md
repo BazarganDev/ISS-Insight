@@ -29,9 +29,9 @@ if abs(future_sat_lon - orbit_coordinates[-1][1]) > 180:
 - Line 3: If `future_sat_lon` is less than the last recorded longitude, it indicates that the satellite has crossed from the eastern hemisphere to the western hemisphere (or vice versa). To correct this jump: 1) If `future_sat_lon` is less than `orbit_coordinates[-1][1]`, it adds 360 degrees to `future_sat_lon`, effectively wrapping it around from negative to positive. 2) If `future_sat_lon` is greater, it subtracts 360 degrees, bringing it back into the range of -180 to +180.
 
 ### Why does it matter?
-When tracking a satellite's position over time, you may encounter situations where the longitude values can "jump" significantly due to the way longitude is measured. Longitude is expressed in degrees, ranging from -180 to +180 or 0 to 360. The International Date Line (IDL) is located at approximately 180 degrees longitude. Crossing this line can cause a sudden change in the longitude value, which can be problematic for visualizing paths on a map.
-
-
+When tracking a satellite's position over time, you may encounter situations where the longitude values can "jump" significantly due to the way longitude is measured. Longitude is expressed in degrees, ranging from -180 to +180 or 0 to 360. The International Date Line (IDL) is located at approximately 180 degrees longitude. Crossing this line can cause a sudden change in the longitude value, which can be problematic for visualizing paths on a map. In general, handling the IDL problem matters in terms of:
+- Visualization: If you don't adjust for these jumps, the path drawn on a map could appear discontinuous or erratic, making it difficult to understand the satellite's actual trajectory.
+- Data Integrity: Ensuring that longitude values are consistent helps maintain data integrity, especially when plotting or analyzing satellite paths.
 
 ## Libraries
 Required libraries:
