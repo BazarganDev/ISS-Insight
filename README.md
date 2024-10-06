@@ -40,3 +40,13 @@ Required libraries:
 - `Selenium` ([Documentation](https://www.selenium.dev/documentation/)) for automation
 - `Datetime` ([Documentation](https://docs.python.org/3/library/datetime.html)) for retrieving UTC date and time
 - `Time` ([Documentation](https://docs.python.org/3/library/time.html)) for timing
+
+## Running the Script
+- Clone the project (It is recommended to clone it to the Desktop)
+`git clone https://github.com/BazarganDev/ISS-Insight.git`
+- Install required modules
+`pip install -r requirements.txt`
+- Run the script
+`python3 tracker.py`
+
+## Output
