@@ -1,7 +1,7 @@
 # ISS-Insight
 Real-Time International Space Station (ISS) Tracker with Python
 
-A python script to fetch TLE data of the ISS (ZARYA) satellite, calculate its position, predict its orbit and visualize its trajectory on an interactive map. before running the code, let me walk you through some important key concepts. I'm indeed not a specialist in satellites though, therefore I will provide these information with their sources. Please take your time and read these concepts. By understanding these concepts, you will understand the logic behind the script very easily:
+A python script to fetch TLE data of the ISS (ZARYA) satellite, calculate its position, predict its orbit and visualize its trajectory on an interactive map. Thanks to [Celestrak](https://celestrak.org/) We can access to the TLE data of satellites, including International Space Station. before running the code, let me walk you through some important key concepts. I'm indeed not a specialist in satellites though, therefore I will provide these information with their sources. Please take your time and read these concepts. By understanding these concepts, you will understand the logic behind the script very easily:
 
 ## Key Concepts
 ### What is a TLE?
@@ -46,7 +46,12 @@ Required libraries:
 `git clone https://github.com/BazarganDev/ISS-Insight.git`
 - Install required modules
 `pip install -r requirements.txt`
-- Run the script
+- Run the script and wait for the map to launch
 `python3 tracker.py`
 
 ## Output
+![Screenshot_1](https://github.com/user-attachments/assets/1027863f-fe7a-46ee-abb6-daef4b6a12a3)
+![Screenshot_2](https://github.com/user-attachments/assets/4ee308a3-41b1-4bb0-b02a-e394f090444b)
+
+## Updates
+The project still have some room for improvement. So if you have any thoughts to improve the source code, feel free to create a pull request. If you have any suggestions or thinking about collaboration, let me know in the issues section.
