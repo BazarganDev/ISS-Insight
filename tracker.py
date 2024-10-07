@@ -29,28 +29,26 @@ MAP_ZOOM_START = 2
 ORBIT_DURATION_MINUTES = 90
 UPDATE_INTERVAL_SECONDS = 60
 
-# If the ISS (ZARYA) TLE file is missing and is outdated, download the latest data.
-tle_filename = "data_files/iss_zarya_tle.tle"
-url = "https://celestrak.org/NORAD/elements/gp.php?CATNR=25544&FORMAT=TLE"
+# Functions
+def download_tle_file():
+    """
+    If the ISS (ZARYA) TLE file is missing and is outdated, download the latest data.
+    """
+    if not load.exists(TLE_FILENAME) or load.days_old(TLE_FILENAME) > 1.0:
+        try:
+            load.download(TLE_URL, filename=TLE_FILENAME)
+        except Exception as e:
+            print(f"ERROR: Failed to download the TLE data.{e}")
+            exit(1)
 
-if not load.exists(tle_filename) or load.days_old(tle_filename) > 1.0:
-    try:
-        load.download(url, filename=tle_filename)
-    except:
-        print("ERROR: Failed to download the TLE data.\nQuitting the program.")
-        quit()
-
-# Loading satellite data from the TLE file.
-with load.open(tle_filename) as f:
-    satellites = list(parse_tle_file(f, time_scale))
-
-# Index ISS (ZARYA) by NORADID number.
-satellite = {sat.model.satnum: sat for sat in satellites}[25544]
-
-############################################################################################
-
-# Create a blank map and save it as an HTML file.
-folium.Map(location=[0,0], zoom_start=2).save("map/tracker_map.html")
+def load_satellite_data():
+    """
+    Load the satellite data from the TLE file.
+    """
+    with load.open(TLE_FILENAME) as f:
+        satellites = list(parse_tle_file(f, load.timescale()))
+    # Index ISS (ZARYA) by NORADID number.
+    return {sat.model.satnum: sat for sat in satellites}[25544]
 
 # Launch a local browser (in this case, Firefox).
 driver = webdriver.Firefox()
