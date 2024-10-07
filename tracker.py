@@ -84,33 +84,30 @@ def predict_orbit(satellite, current_time):
         orbit_coordinates.append((future_sat_lat, future_sat_lon))
     return orbit_coordinates
 
-# Launch a local browser (in this case, Firefox).
-driver = webdriver.Firefox()
+def main():
+    download_tle_file()
+    satellite = load_satellite_data()
+    driver = webdriver.Firefox()
+    driver.get(f"file:///{os.path.abspath(MAP_FILENAME)}")
+    while True:
+        current_time = datetime.utcnow()
+        t = load.timescale().utc(current_time.year, current_time.month, current_time.day, current_time.hour, current_time.minute, current_time.second)
+        geocentric_pos = satellite.at(t)        # Geocentric Position: Position of the satellite in the vincity of the Earth from its center of mass.
+        sub_pos = geocentric_pos.subpoint()     # Subpoint Position: Position of the satellite projected onto the Earth's surface.
+        sat_lat = sub_pos.latitude.degrees      # Satellite Latitude
+        sat_lon = sub_pos.longitude.degrees     # Satellite Longitude
+        iss_map = create_map(sat_lat, sat_lon)
+        orbit_coordinates = predict_orbit(satellite, t)
+        folium.PolyLine(
+            locations=orbit_coordinates,
+            color="black",
+            weight=1,
+            dash_array="5"
+        ).add_to(iss_map)
+        iss_map.save(MAP_FILENAME)
+        driver.refresh()
+        time.sleep(UPDATE_INTERVAL_SECONDS)
 
-# Load the blank map.
-try:
-    driver.get("file:///home/mammadbaz/Desktop/ISS Insight/map/tracker_map.html")
-except:     # I made sure that this error wont be occurred by creating an empty map.
-    print("ERROR: Map file does not exists.\n")
-    quit()
-
-# Auto Tracking
-# Continuously update the satellite's position and pinpoint its position on the map.
-while True:
-    # Get current UTC time.
-    t_now = datetime.utcnow()
-    t = time_scale.utc(t_now.year, t_now.month, t_now.day, t_now.hour, t_now.minute, t_now.second)
-
-    # Calculate current satellite position.
-    geocentric_pos = satellite.at(t)        # Geocentric Position: Position of the satellite in the vincity of the Earth from its center of mass.
-    sub_pos = geocentric_pos.subpoint()     # Subpoint Position: Position of the satellite projected onto the Earth's surface.
-    sat_lat = sub_pos.latitude.degrees      # Satellite Latitude
-    sat_lon = sub_pos.longitude.degrees     # Satellite Longitude
-
-    # Connect the predicted coordinates to each other to create the orbit.
-    folium.PolyLine(locations=orbit_coordinates, color="black", weight=1, dash_array="5").add_to(iss_map)
-    iss_map.save("map/tracker_map.html")      # Save the map in HTML format.
-    driver.refresh()
-    time.sleep(60)		# Update the map every minute.
-
-driver.close()
+# Ensure the "main" function is only executed when the script is run directly.
+if __name__ == "__main__":
+    main()
