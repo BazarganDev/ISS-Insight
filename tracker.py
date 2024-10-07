@@ -50,6 +50,40 @@ def load_satellite_data():
     # Index ISS (ZARYA) by NORADID number.
     return {sat.model.satnum: sat for sat in satellites}[25544]
 
+def create_map(sat_lat, sat_lon):
+    """
+    Create a new map with the ISS's current position.
+    """
+    # Create a map centered onto the ISS position.
+    iss_map = folium.Map(location=[sat_lat, sat_lon], zoom_start=MAP_ZOOM_START)
+    # Pinpoint the satellite's current position on the map.
+    folium.Marker(
+        location=[sat_lat, sat_lon],
+        tooltip=f"ISS (Lat: {sat_lat}, Lon: {sat_lon})",
+        popup="International Space Station (ZARYA)",
+        icon=folium.Icon(color="red", icon="satellite", prefix="fa")
+    ).add_to(iss_map)
+    return iss_map
+
+def predict_orbit(satellite, current_time):
+    """
+    Predict the orbit of the satellite by predicting its future poitions.
+    ISS completes one orbit around the Earth in approximately 90 minutes.
+    """
+    orbit_coordinates = []
+    for i in range(1, ORBIT_DURATION_MINUTES + 1):
+        future_time = current_time + timedelta(minutes=i)
+        future_geocentric_pos = satellite.at(future_time)
+        future_sub_pos = future_geocentric_pos.subpoint()
+        future_sat_lat = future_sub_pos.latitude.degrees
+        future_sat_lon = future_sub_pos.longitude.degrees
+        # Longitude Adjustment: Check for large jumps in longitude, handling the International Date Line (IDL) problem.
+        if abs(future_sat_lon - orbit_coordinates[-1][1]) > 180:
+            future_sat_lon += 360 if future_sat_lon < orbit_coordinates[-1][1] else -360
+        # Add the fixed coordinates to the list of orbit coordinates.
+        orbit_coordinates.append((future_sat_lat, future_sat_lon))
+    return orbit_coordinates
+
 # Launch a local browser (in this case, Firefox).
 driver = webdriver.Firefox()
 
@@ -72,27 +106,6 @@ while True:
     sub_pos = geocentric_pos.subpoint()     # Subpoint Position: Position of the satellite projected onto the Earth's surface.
     sat_lat = sub_pos.latitude.degrees      # Satellite Latitude
     sat_lon = sub_pos.longitude.degrees     # Satellite Longitude
-
-    # Create a new map.
-    iss_map = folium.Map(location=[sat_lat, sat_lon], zoom_start=2)
-
-    # Pinpoint the satellite's current position on the map.
-    folium.Marker(location=[sat_lat, sat_lon], tooltip=f"ISS (Lat: {sat_lat}, Lon: {sat_lon})", popup="International Space Station (ZARYA)", icon=folium.Icon(color="red", icon="satellite", prefix="fa")).add_to(iss_map)
-
-    orbit_coordinates = [(sat_lat, sat_lon)]
-    for i in range(1, 91):      # ISS completes one orbit around the Earth in approximately 90 minutes.
-        # Predict the orbit of the satellite by predicting its future poitions.
-        future_time = t + timedelta(minutes=i)
-        future_geocentric_pos = satellite.at(future_time)
-        future_sub_pos = future_geocentric_pos.subpoint()
-        future_sat_lat = future_sub_pos.latitude.degrees
-        future_sat_lon = future_sub_pos.longitude.degrees
-        # Longitude Adjustment
-        # Check for large jumps in longitude, handling the International Date Line (IDL) problem.
-        if abs(future_sat_lon - orbit_coordinates[-1][1]) > 180:
-            future_sat_lon += 360 if future_sat_lon < orbit_coordinates[-1][1] else -360
-		# Add the fixed coordinates to the list of orbit coordinates.
-        orbit_coordinates.append((future_sat_lat, future_sat_lon))
 
     # Connect the predicted coordinates to each other to create the orbit.
     folium.PolyLine(locations=orbit_coordinates, color="black", weight=1, dash_array="5").add_to(iss_map)
