@@ -35,11 +35,12 @@ When tracking a satellite's position over time, you may encounter situations whe
 
 ## Libraries
 Required libraries:
-- `Skyfield` ([Documentation](https://rhodesmill.org/skyfield/)) for satellite data processing
-- `Folium` ([Documentation](https://python-visualization.github.io/folium/latest/index.html)) for mapping
-- `Selenium` ([Documentation](https://www.selenium.dev/documentation/)) for automation
-- `Datetime` ([Documentation](https://docs.python.org/3/library/datetime.html)) for retrieving UTC date and time
-- `Time` ([Documentation](https://docs.python.org/3/library/time.html)) for timing
+- `Skyfield` ([Documentation](https://rhodesmill.org/skyfield/))
+- `Folium` ([Documentation](https://python-visualization.github.io/folium/latest/index.html))
+- `Selenium` ([Documentation](https://www.selenium.dev/documentation/))
+- `Datetime` ([Documentation](https://docs.python.org/3/library/datetime.html))
+- `Time` ([Documentation](https://docs.python.org/3/library/time.html))
+- `OS` ([Documentation](https://docs.python.org/3/library/os.html))
 
 ## Running the Script
 - Clone the project (It is recommended to clone it to the Desktop)
