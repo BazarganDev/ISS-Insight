@@ -29,9 +29,6 @@ MAP_ZOOM_START = 2
 ORBIT_DURATION_MINUTES = 90
 UPDATE_INTERVAL_SECONDS = 60
 
-# Initialize a timescale object to handle time-related calculations.
-time_scale = load.timescale()
-
 # If the ISS (ZARYA) TLE file is missing and is outdated, download the latest data.
 tle_filename = "data_files/iss_zarya_tle.tle"
 url = "https://celestrak.org/NORAD/elements/gp.php?CATNR=25544&FORMAT=TLE"
