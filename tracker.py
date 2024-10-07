@@ -1,3 +1,15 @@
+""" Project Description
+
+ISS Insight: Real-Time International Space Station Tracker
+
+This script tracks the International Space Station (more specifically, it tracks ZARYA module of the ISS)
+and displays its current position by visualizing its trajectory on the map.
+It also predicts the ISS's orbit for the next 90 minutes.
+
+Author: Mohammad Bazargan
+Source: https://github.com/BazarganDev/ISS-Insight
+"""
+
 # Import necessary modules
 from datetime import datetime, timedelta
 from skyfield.iokit import parse_tle_file
@@ -5,8 +17,17 @@ from skyfield.api import load, Topos
 from selenium import webdriver
 import folium
 import time
+import os
 
 
+
+# Constants
+TLE_FILENAME = "data_files/iss_zarya_tle.tle"
+TLE_URL = "https://celestrak.org/NORAD/elements/gp.php?CATNR=25544&FORMAT=TLE"
+MAP_FILENAME = "map/tracker_map.html"
+MAP_ZOOM_START = 2
+ORBIT_DURATION_MINUTES = 90
+UPDATE_INTERVAL_SECONDS = 60
 
 # Initialize a timescale object to handle time-related calculations.
 time_scale = load.timescale()
