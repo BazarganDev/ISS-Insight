@@ -70,7 +70,9 @@ def predict_orbit(satellite, current_time):
     Predict the orbit of the satellite by predicting its future poitions.
     ISS completes one orbit around the Earth in approximately 90 minutes.
     """
-    orbit_coordinates = []
+    current_sat_lat = satellite.at(current_time).subpoint().latitude.degrees
+    current_sat_lon = satellite.at(current_time).subpoint().longitude.degrees
+    orbit_coordinates = [(current_sat_lat, current_sat_lon)]
     for i in range(1, ORBIT_DURATION_MINUTES + 1):
         future_time = current_time + timedelta(minutes=i)
         future_geocentric_pos = satellite.at(future_time)
