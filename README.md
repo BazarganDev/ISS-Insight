@@ -43,7 +43,7 @@ Required libraries:
 - `OS` ([Documentation](https://docs.python.org/3/library/os.html))
 
 ## Running the Script
-- Clone the project (It is recommended to clone it to the Desktop)
+- Clone the project
 `git clone https://github.com/BazarganDev/ISS-Insight.git`
 - Install required modules
 `pip install -r requirements.txt`
