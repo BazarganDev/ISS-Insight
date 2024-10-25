@@ -55,17 +55,23 @@ def load_satellite_data():
 def create_map(sat_lat, sat_lon):
     """
     Create a new map with the ISS's current position.
+
+    Args:
+        sat_lat: Satellite latitude.
+        sat_lon: Satellite longitude.
+    Return:
+        sat_map: Visualized location of the satellite map
     """
     # Create a map centered onto the ISS position.
-    iss_map = folium.Map(location=[sat_lat, sat_lon], zoom_start=MAP_ZOOM_START)
+    sat_map = folium.Map(location=[sat_lat, sat_lon], zoom_start=MAP_ZOOM_START)
     # Pinpoint the satellite's current position on the map.
     folium.Marker(
         location=[sat_lat, sat_lon],
         tooltip=f"ISS (Lat: {sat_lat}, Lon: {sat_lon})",
         popup="International Space Station (ZARYA)",
         icon=folium.Icon(color="red", icon="satellite", prefix="fa")
-    ).add_to(iss_map)
-    return iss_map
+    ).add_to(sat_map)
+    return sat_map
 
 
 def predict_orbit(satellite, current_time):
