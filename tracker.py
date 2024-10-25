@@ -13,12 +13,11 @@ Source: https://github.com/BazarganDev/ISS-Insight
 # Import necessary modules
 from datetime import datetime, timedelta
 from skyfield.iokit import parse_tle_file
-from skyfield.api import load, Topos
+from skyfield.api import load
 from selenium import webdriver
 import folium
 import time
 import os
-
 
 
 # Constants
@@ -28,6 +27,7 @@ MAP_FILENAME = "map/tracker_map.html"
 MAP_ZOOM_START = 2
 ORBIT_DURATION_MINUTES = 90
 UPDATE_INTERVAL_SECONDS = 60
+
 
 # Functions
 def download_tle_file():
@@ -41,6 +41,7 @@ def download_tle_file():
             print(f"ERROR: Failed to download the TLE data.{e}")
             exit(1)
 
+
 def load_satellite_data():
     """
     Load the satellite data from the TLE file.
@@ -49,6 +50,7 @@ def load_satellite_data():
         satellites = list(parse_tle_file(f, load.timescale()))
     # Index ISS (ZARYA) by NORADID number.
     return {sat.model.satnum: sat for sat in satellites}[25544]
+
 
 def create_map(sat_lat, sat_lon):
     """
@@ -64,6 +66,7 @@ def create_map(sat_lat, sat_lon):
         icon=folium.Icon(color="red", icon="satellite", prefix="fa")
     ).add_to(iss_map)
     return iss_map
+
 
 def predict_orbit(satellite, current_time):
     """
@@ -86,6 +89,7 @@ def predict_orbit(satellite, current_time):
         # Add the fixed coordinates to the list of orbit coordinates.
         orbit_coordinates.append((future_sat_lat, future_sat_lon))
     return orbit_coordinates
+
 
 def main():
     download_tle_file()
@@ -110,6 +114,7 @@ def main():
         iss_map.save(MAP_FILENAME)
         driver.refresh()
         time.sleep(UPDATE_INTERVAL_SECONDS)
+
 
 # Ensure the "main" function is only executed when the script is run directly.
 if __name__ == "__main__":
