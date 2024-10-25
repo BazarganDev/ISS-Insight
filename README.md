@@ -56,3 +56,7 @@ Required libraries:
 
 ## Updates
 The project still have some room for improvement. So if you have any thoughts to improve the source code, feel free to create a pull request. If you have any suggestions or thinking about collaboration, let me know in the issues section.
+
+## To-Do
+- [ ] Fix bugs
+- [ ] Add docstring for each function
