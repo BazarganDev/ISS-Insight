@@ -3,7 +3,7 @@ Real-Time International Space Station (ISS) Tracker with Python
 
 A Python script that fetches TLE data of the ISS (ZARYA) satellite, calculates its position, predicts its orbit and visualizes its trajectory on an interactive map. Thanks to [Celestrak](https://celestrak.org/) We can access to the TLE data of satellites, including International Space Station.
 
-If you are curious about the project or interested, read more on the blog: [Project: ISS Insight](https://bazargandev.github.io/iss_insight.html)
+If you are curious or interested about the project, read more on the blog: [Project: ISS Insight](https://bazargandev.github.io/iss_insight.html)
 
 ## Libraries
 Required libraries:
